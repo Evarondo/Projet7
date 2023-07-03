@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[112]:
+# In[1]:
 
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.graph_objects as go
 
 import streamlit as st
@@ -20,7 +19,7 @@ import pickle
 from PIL import Image
 
 
-# In[17]:
+# In[2]:
 
 
 # On importe le df enregistré précédemment contenant les features sélectionnées
@@ -36,7 +35,7 @@ df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
 data = df_filtered.copy().reset_index()
 
 
-# In[72]:
+# In[3]:
 
 
 # On crée une fonction affichant la jauge de prédiction du seuil pour chaque client
@@ -60,7 +59,7 @@ def jauge(value, optimal_threshold):
     return fig
 
 
-# In[19]:
+# In[4]:
 
 
 # On importe le fichier contenant les valeurs de shap
@@ -73,7 +72,7 @@ explainer = shap_file['explainer']
 data_shap = shap_file['data_shap']
 
 
-# In[81]:
+# In[5]:
 
 
 # On crée une fonction qui affiche 2 graphiques de la distribution d'une feature sélectionnée
@@ -108,7 +107,7 @@ def distri_features(df, optimal_threshold, feature, client_value):
     st.pyplot(fig)
 
 
-# In[93]:
+# In[6]:
 
 
 # On crée une fonction affichant un nuage de points entre 2 features sélectionnées
@@ -137,7 +136,7 @@ def bivarié_plot(feature1, feature2, df, client_value):
     st.pyplot(fig)
 
 
-# In[114]:
+# In[7]:
 
 
 def get_client_info(client_id):
@@ -147,10 +146,6 @@ def get_client_info(client_id):
 def get_threshold():
     response = requests.get("http://localhost:8000/threshold")
     return response.json()
-
-# def get_features(client_id):
-#     response = requests.get(f"http://localhost:8000/features/{client_id}")
-#     return response.json()
 
 # Créez une interface utilisateur Streamlit
 def main():
