@@ -6,6 +6,7 @@ cytoolz==0.12.0
 defusedxml==0.7.1
 distributed==2022.7.0
 fastapi==0.98.0
+gunicorn
 jinja2==3.1.2
 lightgbm==3.3.5
 lz4==3.1.3
