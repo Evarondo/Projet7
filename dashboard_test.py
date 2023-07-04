@@ -22,6 +22,18 @@ from PIL import Image
 # In[2]:
 
 
+pip install numpy==1.20.0
+
+
+# In[3]:
+
+
+pip install numba==0.54.0
+
+
+# In[4]:
+
+
 # On importe le df enregistré précédemment contenant les features sélectionnées
 # et les probabilités pour chaque client
 
@@ -35,7 +47,13 @@ df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
 data = df_filtered.copy().reset_index()
 
 
-# In[3]:
+# In[5]:
+
+
+print(shap.__version__)
+
+
+# In[6]:
 
 
 # On crée une fonction affichant la jauge de prédiction du seuil pour chaque client
@@ -59,7 +77,7 @@ def jauge(value, optimal_threshold):
     return fig
 
 
-# In[4]:
+# In[7]:
 
 
 # On importe le fichier contenant les valeurs de shap
@@ -72,7 +90,7 @@ explainer = shap_file['explainer']
 data_shap = shap_file['data_shap']
 
 
-# In[5]:
+# In[8]:
 
 
 # On crée une fonction qui affiche 2 graphiques de la distribution d'une feature sélectionnée
@@ -107,7 +125,7 @@ def distri_features(df, optimal_threshold, feature, client_value):
     st.pyplot(fig)
 
 
-# In[6]:
+# In[9]:
 
 
 # On crée une fonction affichant un nuage de points entre 2 features sélectionnées
@@ -136,7 +154,7 @@ def bivarié_plot(feature1, feature2, df, client_value):
     st.pyplot(fig)
 
 
-# In[7]:
+# In[10]:
 
 
 def get_client_info(client_id):
