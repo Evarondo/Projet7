@@ -19,18 +19,6 @@ import pickle
 from PIL import Image
 
 
-# In[2]:
-
-
-pip install numpy==1.20.0
-
-
-# In[3]:
-
-
-pip install numba==0.54.0
-
-
 # In[4]:
 
 
