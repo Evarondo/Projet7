@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[20]:
 
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.graph_objects as go
 import shap
 import os
@@ -24,6 +23,7 @@ from sklearn.metrics import confusion_matrix
 from imblearn.under_sampling import RandomUnderSampler
 
 import uvicorn
+import gunicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
@@ -153,7 +153,7 @@ def jauge(value):
     return fig
 
 
-# In[11]:
+# In[18]:
 
 
 class ClientSearch(BaseModel):
@@ -221,4 +221,10 @@ async def get_features(client_id: int):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+
+
+# In[ ]:
+
+
+
 
