@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[20]:
+# In[1]:
 
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 import plotly.graph_objects as go
 import shap
 import os
@@ -23,7 +24,6 @@ from sklearn.metrics import confusion_matrix
 from imblearn.under_sampling import RandomUnderSampler
 
 import uvicorn
-import gunicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
@@ -38,7 +38,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-# In[2]:
+# In[15]:
 
 
 pd.set_option('display.max_columns', None)
@@ -46,14 +46,19 @@ pd.set_option('display.max_columns', None)
 # Importation du fichier clients (fichier original nettoyé)
 df = pd.read_csv('application_clean.csv', sep=';')
 
+# Sélection d'un échantillon de 1000 clients
+random_clients = df.sample(n=1000, random_state=42)
+df = random_clients
+
 # Importation du fichier de données filtrées
-df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';', index_col='SK_ID_CURR')
+df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';')
 df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
+df_filtered = df_filtered[df_filtered['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])]
 
 data = df_filtered.copy().reset_index().drop('TARGET', axis=1)
 
 
-# In[3]:
+# In[18]:
 
 
 # On ouvre le fichier pickel contenant les informations relatives à notre modèle
@@ -69,7 +74,7 @@ y_pred_prob_train = model['y_pred_prob_train']
 model = model['trained_model']
 
 
-# In[4]:
+# In[19]:
 
 
 # Ajout des probabilités aux données de test et d'entraînement
@@ -77,15 +82,24 @@ X_train['Proba'] = y_pred_prob_train
 X_test['Proba'] = y_pred_prob_test
 
 
-# In[5]:
+# In[20]:
 
 
 # On concatène nos df
 data_prob = pd.concat([X_train, X_test])
-data_prob = data_prob
+data_prob = data_prob[data_prob['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])]
 
 
-# In[6]:
+# In[26]:
+
+
+# # On enregistre nos df
+# df.to_csv('application_clean_sample.csv', sep=';')
+# data.to_csv('df_filtered_sample.csv', sep=';')
+# data_prob.to_csv('data_prob_sample.csv', sep=';')
+
+
+# In[21]:
 
 
 # Calcul de la courbe ROC
@@ -129,7 +143,7 @@ print("Le score f1 avec le seuil optimal est de :", f1_optimal)
 print("Le score AUC avec le seuil optimal est de :", AUC_optimal)
 
 
-# In[7]:
+# In[22]:
 
 
 # On crée une fonction affichant la jauge de prédiction du seuil pour chaque client
@@ -153,7 +167,7 @@ def jauge(value):
     return fig
 
 
-# In[18]:
+# In[23]:
 
 
 class ClientSearch(BaseModel):
