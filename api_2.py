@@ -218,6 +218,7 @@ def jauge(value):
 #             "Position du client par rapport au seuil:": position
 #         }
 
+<<<<<<< HEAD
 #         return response
 #     else:
 #         return {"message": "Client non trouvé"}
@@ -225,11 +226,30 @@ def jauge(value):
 # @app.get("/threshold")
 # async def get_threshold():
 #     return {"threshold": optimal_threshold}
+=======
+        return response
+    else:
+        return {"message": "Client non trouvé"}
+>>>>>>> f381628105635f1a584d26fe7f4c52b08cbfc1ae
 
 @app.get("/")
 def home():
     return "bienvenue dans mon api"
+<<<<<<< HEAD
 
+=======
+
+# @app.get("/threshold")
+# async def get_threshold():
+#     return {"threshold": optimal_threshold}
+
+# @app.get("/features{client_id}")
+# async def get_features(client_id: int):
+#     # On récupère les informations du client à partir du df (data)
+#     return {"data_features": data}
+
+
+>>>>>>> f381628105635f1a584d26fe7f4c52b08cbfc1ae
 # if __name__ == "__main__":
 #     port = int(os.environ.get("PORT", 8000))
 #     uvicorn.run(app, host="0.0.0.0", port=port)
