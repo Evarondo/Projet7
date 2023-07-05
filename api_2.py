@@ -221,20 +221,24 @@ async def get_client_info(client_id: int):
         return response
     else:
         return {"message": "Client non trouvé"}
-    
-@app.get("/threshold")
-async def get_threshold():
-    return {"threshold": optimal_threshold}
 
-@app.get("/features{client_id}")
-async def get_features(client_id: int):
-    # On récupère les informations du client à partir du df (data)
-    return {"data_features": data}
+@app.get("/")
+def home():
+    return "bienvenue dans mon api"
+
+# @app.get("/threshold")
+# async def get_threshold():
+#     return {"threshold": optimal_threshold}
+
+# @app.get("/features{client_id}")
+# async def get_features(client_id: int):
+#     # On récupère les informations du client à partir du df (data)
+#     return {"data_features": data}
 
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 8000))
+#     uvicorn.run(app, host="0.0.0.0", port=port)
 
 
 # In[ ]:
