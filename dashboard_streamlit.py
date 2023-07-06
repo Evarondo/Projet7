@@ -4,13 +4,15 @@
 # In[1]:
 
 
+import matplotlib.pyplot as plt
+import shap
 import streamlit as st
 import requests
 from PIL import Image
-from data_processing import df, data_prob, optimal_threshold, jauge, distri_features, bivariate_plot
+from data_processing import data_prob, shap_values, data_shap_scaled, explainer, data_shap, optimal_threshold, jauge, distri_features, bivarié_plot
 
 
-# In[8]:
+# In[2]:
 
 
 def get_client_info(client_id):
@@ -32,7 +34,7 @@ def main():
     optimal_threshold = get_threshold()['threshold']
     
     # Saisie de l'identifiant client
-    client_id = st.selectbox("Sélectionnez l'identifiant client :", df['SK_ID_CURR'].unique())
+    client_id = st.selectbox("Sélectionnez l'identifiant client :", data_prob['SK_ID_CURR'].unique())
     
     # Vérifiez si l'identifiant client est saisi
     if client_id:
@@ -101,21 +103,21 @@ def main():
             st.subheader("Distribution de la feature sélectionnée dans la liste")
 
             # Sélection d'une feature pour le graphique de distribution
-            feature = st.selectbox("Sélectionnez une feature:", df.columns)
+            feature = st.selectbox("Sélectionnez une feature:", data_prob.columns)
 
             # Récupération de la valeur de la feature pour le client sélectionné
-            client_data = df[df['SK_ID_CURR'] == int(client_id)]
+            client_data = data_prob[data_prob['SK_ID_CURR'] == int(client_id)]
             if not client_data.empty:
                 client_value = client_data[feature].values[0]
                 # Affichage des graphiques de distribution
-                distri_features(df, optimal_threshold, feature, client_value)
+                distri_features(data_prob, optimal_threshold, feature, client_value)
             else:
                 st.warning("Aucune donnée disponible pour cet identifiant client")
             
             st.subheader("Analyse bi-variée entre 2 features sélectionnées (dégradé de couleur selon le score)")
             
             # Sélection de 2 features
-            selected_features = st.multiselect("Sélectionnez deux features:", df.columns, default=[])
+            selected_features = st.multiselect("Sélectionnez deux features:", data_prob.columns, default=[])
             
             # Vérification
             if len(selected_features) != 2:
@@ -124,11 +126,17 @@ def main():
                 feature1, feature2 = selected_features[0], selected_features[1]
                 # Affichage scatter plot
                 if not client_data.empty:
-                    bivarié_plot(feature1, feature2, df, int(client_id))
+                    bivarié_plot(feature1, feature2, data_prob, int(client_id))
                 else:
                     st.warning("Aucune donnée disponible pour cet identifiant client")
             
 # Exécution de l'application Streamlit
 if __name__ == "__main__":
     main()
+
+
+# In[ ]:
+
+
+
 

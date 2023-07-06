@@ -1,21 +1,27 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[ ]:
 
 
+import streamlit as st
 import pandas as pd
 import pickle
 from sklearn.metrics import roc_curve, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Importation du fichier clients (fichier original nettoyé)
 df = pd.read_csv('application_clean.csv', sep=';')
+df = df.drop('Unnamed: 0', axis=1)
+df = df.sample(n=1000, random_state=42)
 
 # Importation du fichier de données filtrées
 df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';')
 df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
-data = df_filtered.copy().reset_index().drop('TARGET', axis=1)
+data = df_filtered.copy().drop('TARGET', axis=1)
+data = data[data['SK_ID_CURR'].isin(df['SK_ID_CURR'])]
 
 # On ouvre le fichier pickel contenant les informations relatives à notre modèle
 with open('modele_optimal.pickle', 'rb') as file:
@@ -35,6 +41,7 @@ X_test['Proba'] = y_pred_prob_test
 
 # On concatène nos df
 data_prob = pd.concat([X_train, X_test])
+data_prob = data_prob[data_prob['SK_ID_CURR'].isin(df['SK_ID_CURR'])]
 
 # Calcul de la courbe ROC
 fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob_test)
@@ -59,7 +66,7 @@ f1_optimal = f1_score(y_test, y_pred_optimal)
 AUC_optimal = roc_auc_score(y_test, y_pred_prob_test)
 
 # On crée une fonction affichant la jauge de prédiction du seuil pour chaque client
-def jauge(value):
+def jauge(value, optimal_threshold):
     if value > optimal_threshold:
         color='red'
     else:
@@ -127,13 +134,13 @@ def bivarié_plot(feature1, feature2, df, client_value):
     data_features = df[[feature1, feature2]]
     
     # Positions des clients
-    client_positions = data_features.loc[client_value]
+    client_positions = data_features[data_features.index == client_value]
     
     # Scatter plot
     plt.figure(figsize=(10, 6))
     scatter = plt.scatter(data_features[feature1], data_features[feature2], c=score, cmap='coolwarm')
     plt.colorbar(scatter, label='Scores')
-    plt.scatter(client_positions[feature1], client_positions[feature2], color='black', marker='*', s=200, label='Client')
+    plt.scatter(client_positions[feature1].values, client_positions[feature2].values, color='black', marker='*', s=200, label='Client')
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     plt.title('Analyse bi-variée entre {} et {} pour le client {}'.format(feature1, feature2, client_value))
