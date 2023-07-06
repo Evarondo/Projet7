@@ -2,5 +2,9 @@ fastapi
 pandas
 pydantic
 scikit-learn
+matplotlib
+pickle
 plotly
+seaborn
+streamlit
 uvicorn
