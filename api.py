@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[20]:
+# In[ ]:
 
 
-import threading
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
@@ -67,11 +67,8 @@ async def get_threshold():
     return {"threshold": optimal_threshold}
 
 if __name__ == "__main__":
-    def run_uvicon():
-        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8001)))
-
-    uvicorn_thread = threading.Thread(target=run_uvicon)
-    uvicorn_thread.start()
+    port = int(os.environ.get("PORT", 8003))
+    uvicorn.run(api:app, host="0.0.0.0", port=port)
 
 
 # In[ ]:
