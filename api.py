@@ -8,7 +8,7 @@ import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
-from data_procesing_api import df, data_prob, optimal_threshold
+from data_processing import df, data_prob, optimal_threshold
 
 class ClientSearch(BaseModel):
     client_id: int
