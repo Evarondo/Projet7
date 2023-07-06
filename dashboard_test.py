@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+import seaborn as sns
 
 import streamlit as st
 import requests
@@ -19,7 +20,7 @@ import pickle
 from PIL import Image
 
 
-# In[4]:
+# In[2]:
 
 
 # On importe le df enregistré précédemment contenant les features sélectionnées
@@ -28,6 +29,9 @@ from PIL import Image
 df = pd.read_csv('data_prob.csv', sep=';')
 df = df.drop("Unnamed: 0", axis=1)
 
+# Tri des données dans l'ordre croissant pour l'identifiant
+df = df.sort_values(by='SK_ID_CURR').reset_index(drop=True)
+
 # Importation du fichier de données filtrées
 df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';', index_col='SK_ID_CURR')
 df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
@@ -35,13 +39,7 @@ df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
 data = df_filtered.copy().reset_index()
 
 
-# In[5]:
-
-
-print(shap.__version__)
-
-
-# In[6]:
+# In[3]:
 
 
 # On crée une fonction affichant la jauge de prédiction du seuil pour chaque client
@@ -65,7 +63,7 @@ def jauge(value, optimal_threshold):
     return fig
 
 
-# In[7]:
+# In[4]:
 
 
 # On importe le fichier contenant les valeurs de shap
@@ -78,7 +76,7 @@ explainer = shap_file['explainer']
 data_shap = shap_file['data_shap']
 
 
-# In[8]:
+# In[5]:
 
 
 # On crée une fonction qui affiche 2 graphiques de la distribution d'une feature sélectionnée
@@ -113,7 +111,7 @@ def distri_features(df, optimal_threshold, feature, client_value):
     st.pyplot(fig)
 
 
-# In[9]:
+# In[6]:
 
 
 # On crée une fonction affichant un nuage de points entre 2 features sélectionnées
@@ -136,21 +134,21 @@ def bivarié_plot(feature1, feature2, df, client_value):
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     plt.title('Analyse bi-variée entre {} et {} pour le client {}'.format(feature1, feature2, client_value))
-    plt.legend()
+    plt.legend(loc='upper right')
     
     fig = plt.gcf()
     st.pyplot(fig)
 
 
-# In[10]:
+# In[ ]:
 
 
 def get_client_info(client_id):
-    response = requests.get(f"http://localhost:8000/clients/{client_id}")
+    response = requests.get(f"http://localhost:8001/clients/{client_id}")
     return response.json()
 
 def get_threshold():
-    response = requests.get("http://localhost:8000/threshold")
+    response = requests.get("http://localhost:8001/threshold")
     return response.json()
 
 # Créez une interface utilisateur Streamlit
@@ -164,7 +162,7 @@ def main():
     optimal_threshold = get_threshold()['threshold']
     
     # Saisie de l'identifiant client
-    client_id = st.text_input("Entrez l'identifiant client:")
+    client_id = st.selectbox("Sélectionnez l'identifiant client :", df['SK_ID_CURR'].unique())
     
     # Vérifiez si l'identifiant client est saisi
     if client_id:
@@ -256,8 +254,7 @@ def main():
                 feature1, feature2 = selected_features[0], selected_features[1]
                 # Affichage scatter plot
                 if not client_data.empty:
-                    client_value = client_data[feature].values[0]
-                    bivarié_plot(feature1, feature2, df, client_value)
+                    bivarié_plot(feature1, feature2, df, int(client_id))
                 else:
                     st.warning("Aucune donnée disponible pour cet identifiant client")
             
