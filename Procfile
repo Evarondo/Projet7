@@ -1,1 +1,1 @@
-web: uvicorn app.api_2:app --host=0.0.0.0 --port=${PORT}
+web: uvicorn api_2:app --host=0.0.0.0 --port=${PORT}
