@@ -38,7 +38,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-# In[15]:
+# In[2]:
 
 
 pd.set_option('display.max_columns', None)
@@ -46,19 +46,33 @@ pd.set_option('display.max_columns', None)
 # Importation du fichier clients (fichier original nettoyé)
 df = pd.read_csv('application_clean.csv', sep=';')
 
-# Sélection d'un échantillon de 1000 clients
-random_clients = df.sample(n=1000, random_state=42)
-df = random_clients
-
 # Importation du fichier de données filtrées
 df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';')
 df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
-df_filtered = df_filtered[df_filtered['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])]
-
 data = df_filtered.copy().reset_index().drop('TARGET', axis=1)
 
 
-# In[18]:
+# In[3]:
+
+
+# pd.set_option('display.max_columns', None)
+
+# # Importation du fichier clients (fichier original nettoyé)
+# df = pd.read_csv('application_clean.csv', sep=';')
+
+# # Sélection d'un échantillon de 1000 clients
+# random_clients = df.sample(n=1000, random_state=42)
+# df = random_clients
+
+# # Importation du fichier de données filtrées
+# df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';')
+# df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
+# df_filtered = df_filtered[df_filtered['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])]
+
+# data = df_filtered.copy().reset_index().drop('TARGET', axis=1)
+
+
+# In[4]:
 
 
 # On ouvre le fichier pickel contenant les informations relatives à notre modèle
@@ -74,7 +88,7 @@ y_pred_prob_train = model['y_pred_prob_train']
 model = model['trained_model']
 
 
-# In[19]:
+# In[5]:
 
 
 # Ajout des probabilités aux données de test et d'entraînement
@@ -82,15 +96,23 @@ X_train['Proba'] = y_pred_prob_train
 X_test['Proba'] = y_pred_prob_test
 
 
-# In[20]:
+# In[6]:
 
 
 # On concatène nos df
 data_prob = pd.concat([X_train, X_test])
-data_prob = data_prob[data_prob['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])]
+data_prob
 
 
-# In[26]:
+# In[7]:
+
+
+# # On concatène nos df
+# data_prob = pd.concat([X_train, X_test])
+# data_prob = data_prob[data_prob['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])]
+
+
+# In[8]:
 
 
 # # On enregistre nos df
@@ -99,7 +121,7 @@ data_prob = data_prob[data_prob['SK_ID_CURR'].isin(random_clients['SK_ID_CURR'])
 # data_prob.to_csv('data_prob_sample.csv', sep=';')
 
 
-# In[21]:
+# In[9]:
 
 
 # Calcul de la courbe ROC
@@ -143,7 +165,7 @@ print("Le score f1 avec le seuil optimal est de :", f1_optimal)
 print("Le score AUC avec le seuil optimal est de :", AUC_optimal)
 
 
-# In[22]:
+# In[10]:
 
 
 # On crée une fonction affichant la jauge de prédiction du seuil pour chaque client
@@ -167,15 +189,7 @@ def jauge(value):
     return fig
 
 
-# In[29]:
-
-
-@app.get("/")
-def home():
-    return "bienvenue dans mon api"
-
-
-# In[28]:
+# In[ ]:
 
 
 class ClientSearch(BaseModel):
@@ -235,8 +249,7 @@ async def get_threshold():
     return {"threshold": optimal_threshold}
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8002)))
 
 
 # In[ ]:
