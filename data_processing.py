@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[75]:
+# In[76]:
 
 
 import streamlit as st
 import pandas as pd
 import pickle
+import gzip
 from sklearn.metrics import roc_curve, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
@@ -21,16 +22,17 @@ df_filtered = pd.read_csv('df_filtered_sample.csv', sep=';')
 data = df_filtered.copy()
 
 # On ouvre le fichier pickel contenant les informations relatives à notre modèle
-with open('modele_optimal.pickle', 'rb') as file:
-    model = pickle.load(file)
+with gzip.open('modele_optimal.pickle.gz', 'rb') as file:
+    modele_save = pickle.load(file)
 
-y_train = model['y_train']
-y_test = model['y_test']
-X_train = model['X_train']
-X_test = model['X_test']
-y_pred_prob_test = model['y_pred_prob_test']
-y_pred_prob_train = model['y_pred_prob_train']
-model = model['trained_model']
+# Accédez aux informations du modèle
+y_train = modele_save['y_train']
+y_test = modele_save['y_test']
+X_train = modele_save['X_train']
+X_test = modele_save['X_test']
+y_pred_prob_test = modele_save['y_pred_prob_test']
+y_pred_prob_train = modele_save['y_pred_prob_train']
+trained_model = modele_save['trained_model']
 
 # Ajout des probabilités aux données de test et d'entraînement
 X_train['Proba'] = y_pred_prob_train
