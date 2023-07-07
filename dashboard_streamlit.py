@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 import matplotlib.pyplot as plt
@@ -12,7 +12,7 @@ from PIL import Image
 from data_processing import data_prob, shap_values, data_shap_scaled, explainer, data_shap, optimal_threshold, jauge, distri_features, bivarié_plot
 
 
-# In[2]:
+# In[19]:
 
 
 def get_client_info(client_id):
@@ -24,7 +24,7 @@ def get_threshold():
     return response.json()
 
 # Créez une interface utilisateur Streamlit
-def main():
+def main(data_shap):
     st.title("Application tableau de bord interactif")
     
     image = Image.open('image_P7.png')
@@ -89,6 +89,9 @@ def main():
 
             with columns[0]:
                 st.pyplot(fig)
+                
+            # Réindexer le DataFrame avec des indices continus
+            data_shap = data_shap.reset_index(drop=True)
 
             # Feature importance locale
             client_data_shap = data_shap[data_shap['SK_ID_CURR'] == int(client_id)].index.item()
@@ -132,7 +135,7 @@ def main():
             
 # Exécution de l'application Streamlit
 if __name__ == "__main__":
-    main()
+    main(data_shap)
 
 
 # In[ ]:

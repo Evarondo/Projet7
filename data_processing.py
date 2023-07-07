@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[61]:
 
 
 import streamlit as st
@@ -13,15 +13,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Importation du fichier clients (fichier original nettoyé)
-df = pd.read_csv('application_clean.csv', sep=';')
-df = df.drop('Unnamed: 0', axis=1)
-df = df.sample(n=1000, random_state=42)
+df = pd.read_csv('application_clean_sample.csv', sep=';')
 
 # Importation du fichier de données filtrées
-df_filtered = pd.read_csv('df_filtered_p7.csv', sep=';')
-df_filtered = df_filtered.drop('Unnamed: 0', axis=1)
+df_filtered = pd.read_csv('df_filtered_sample.csv', sep=';')
 data = df_filtered.copy().drop('TARGET', axis=1)
-data = data[data['SK_ID_CURR'].isin(df['SK_ID_CURR'])]
 
 # On ouvre le fichier pickel contenant les informations relatives à notre modèle
 with open('modele_optimal.pickle', 'rb') as file:
@@ -85,13 +81,13 @@ def jauge(value, optimal_threshold):
     return fig
 
 # On importe le fichier contenant les valeurs de shap
-with open('shap_values.pickle', 'rb') as file:
-    shap_file = pickle.load(file)
+with open('shap_values_sample.pickle', 'rb') as file:
+    shap_file_sample = pickle.load(file)
 
-shap_values = shap_file['shap_values']
-data_shap_scaled = shap_file['shap_scaled']
-explainer = shap_file['explainer']
-data_shap = shap_file['data_shap']
+shap_values = shap_file_sample['shap_values']
+data_shap_scaled = shap_file_sample['shap_scaled']
+explainer = shap_file_sample['explainer']
+data_shap = shap_file_sample['data_shap']
 
 # On crée une fonction qui affiche 2 graphiques de la distribution d'une feature sélectionnée
 # pour les 2 classes
@@ -140,7 +136,7 @@ def bivarié_plot(feature1, feature2, df, client_value):
     plt.figure(figsize=(10, 6))
     scatter = plt.scatter(data_features[feature1], data_features[feature2], c=score, cmap='coolwarm')
     plt.colorbar(scatter, label='Scores')
-    plt.scatter(client_positions[feature1].values, client_positions[feature2].values, color='black', marker='*', s=200, label='Client')
+    plt.scatter(client_positions[feature1], client_positions[feature2], color='black', marker='*', s=200, label='Client')
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     plt.title('Analyse bi-variée entre {} et {} pour le client {}'.format(feature1, feature2, client_value))
