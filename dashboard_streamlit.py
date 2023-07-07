@@ -16,11 +16,11 @@ from data_processing import data_prob, shap_values, data_shap_scaled, explainer,
 
 
 def get_client_info(client_id):
-    response = requests.get(f"http://localhost:8001/clients/{client_id}")
+    response = requests.get(f"https://fastapi-projet7-24875f0688c4.herokuapp.com/clients/{client_id}")
     return response.json()
 
 def get_threshold():
-    response = requests.get("http://localhost:8001/threshold")
+    response = requests.get("https://fastapi-projet7-24875f0688c4.herokuapp.com/threshold")
     return response.json()
 
 # Créez une interface utilisateur Streamlit
