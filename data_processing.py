@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[61]:
+# In[65]:
 
 
 import streamlit as st
@@ -17,7 +17,7 @@ df = pd.read_csv('application_clean_sample.csv', sep=';')
 
 # Importation du fichier de données filtrées
 df_filtered = pd.read_csv('df_filtered_sample.csv', sep=';')
-data = df_filtered.copy().drop('TARGET', axis=1)
+data = df_filtered.copy()
 
 # On ouvre le fichier pickel contenant les informations relatives à notre modèle
 with open('modele_optimal.pickle', 'rb') as file:
@@ -144,4 +144,10 @@ def bivarié_plot(feature1, feature2, df, client_value):
     
     fig = plt.gcf()
     st.pyplot(fig)
+
+
+# In[63]:
+
+
+data_shap_sample
 
