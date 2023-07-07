@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[73]:
+# In[75]:
 
 
 import streamlit as st
@@ -24,6 +24,8 @@ data = df_filtered.copy()
 with open('modele_optimal.pickle', 'rb') as file:
     model = pickle.load(file)
 
+y_train = model['y_train']
+y_test = model['y_test']
 X_train = model['X_train']
 X_test = model['X_test']
 y_pred_prob_test = model['y_pred_prob_test']
