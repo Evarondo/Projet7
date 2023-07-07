@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[65]:
+# In[73]:
 
 
 import streamlit as st
@@ -11,6 +11,7 @@ from sklearn.metrics import roc_curve, accuracy_score, precision_score, recall_s
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import seaborn as sns
+import imblearn
 
 # Importation du fichier clients (fichier original nettoyé)
 df = pd.read_csv('application_clean_sample.csv', sep=';')
@@ -23,8 +24,6 @@ data = df_filtered.copy()
 with open('modele_optimal.pickle', 'rb') as file:
     model = pickle.load(file)
 
-y_train = model['y_train']
-y_test = model['y_test']
 X_train = model['X_train']
 X_test = model['X_test']
 y_pred_prob_test = model['y_pred_prob_test']
@@ -144,10 +143,4 @@ def bivarié_plot(feature1, feature2, df, client_value):
     
     fig = plt.gcf()
     st.pyplot(fig)
-
-
-# In[63]:
-
-
-data_shap_sample
 
