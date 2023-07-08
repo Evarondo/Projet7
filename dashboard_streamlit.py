@@ -34,19 +34,20 @@ from data_processing import data_prob, shap_values, data_shap_scaled, explainer,
 #         print("Error retrieving threshold value")
 #         return None
 
-def get_client_info(client_id, optimal_threshold):
+optimal_threshold = None
+
+def get_client_info(client_id):
     response = requests.get(f"https://fastapi-projet7-24875f0688c4.herokuapp.com/clients/{client_id}?optimal_threshold={optimal_threshold}")
     return response.json()
-    
+
 # Créez une interface utilisateur Streamlit
 def main(data_shap):
+    global optimal_threshold  # Utilisez la variable globale
+    
     st.title("Application tableau de bord interactif")
     
     image = Image.open('image_P7.png')
     st.image(image, caption='Logo entreprise "prêt à dépenser"', use_column_width=True)
-    
-    # Appel de la fonction pour récupérer le seuil optimal
-    optimal_threshold = st.session_state.optimal_threshold
     
     # Saisie de l'identifiant client
     client_id = st.selectbox("Sélectionnez l'identifiant client :", data_prob['SK_ID_CURR'].unique())
@@ -147,8 +148,7 @@ def main(data_shap):
                     bivarié_plot(feature1, feature2, data_prob, int(client_id))
                 else:
                     st.warning("Aucune donnée disponible pour cet identifiant client")
-            
-# Exécution de l'application Streamlit
+
 if __name__ == "__main__":
     main(data_shap)
 
