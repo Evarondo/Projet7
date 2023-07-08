@@ -16,7 +16,7 @@ class ClientSearch(BaseModel):
 app = FastAPI()
 
 @app.get("/clients/{client_id}")
-async def get_client_info(client_id: int):
+async def get_client_info(client_id: int, optimal_threshold: float = optimal_threshold):
     # On récupère les informations du client à partir du DataFrame (df)
     client_info = df[df['SK_ID_CURR'] == client_id]
     
