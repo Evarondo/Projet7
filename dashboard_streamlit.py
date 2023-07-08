@@ -37,10 +37,11 @@ def get_threshold():
     response = requests.get("https://fastapi-projet7-24875f0688c4.herokuapp.com/threshold")
     try:
         data = response.json()
-        return data
-    except ValueError:
-        print("Response content is not valid JSON")
-        return {}
+        threshold = data['threshold']  # Vérifiez si la clé 'threshold' est présente
+        return threshold
+    except (ValueError, KeyError):
+        print("Error retrieving threshold value")
+        return None
 
 # Créez une interface utilisateur Streamlit
 def main(data_shap):
