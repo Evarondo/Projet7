@@ -34,10 +34,8 @@ from data_processing import data_prob, shap_values, data_shap_scaled, explainer,
 #         print("Error retrieving threshold value")
 #         return None
 
-optimal_threshold = None
-
 def get_client_info(client_id):
-    response = requests.get(f"https://fastapi-projet7-24875f0688c4.herokuapp.com/clients/{client_id}?optimal_threshold={optimal_threshold}")
+    response = requests.get(f"https://fastapi-projet7-24875f0688c4.herokuapp.com/clients/{client_id}")
     try:
         data = response.json()
         return data
@@ -47,8 +45,6 @@ def get_client_info(client_id):
 
 # Créez une interface utilisateur Streamlit
 def main(data_shap):
-    global optimal_threshold  # Utilisez la variable globale
-    
     st.title("Application tableau de bord interactif")
     
     image = Image.open('image_P7.png')
