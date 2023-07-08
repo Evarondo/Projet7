@@ -12,7 +12,7 @@ from PIL import Image
 from data_processing import data_prob, shap_values, data_shap_scaled, explainer, data_shap, optimal_threshold, jauge, distri_features, bivarié_plot
 
 
-# In[19]:
+# In[32]:
 
 
 # def get_client_info(client_id, optimal_threshold):
@@ -36,12 +36,7 @@ from data_processing import data_prob, shap_values, data_shap_scaled, explainer,
 
 def get_client_info(client_id):
     response = requests.get(f"https://fastapi-projet7-24875f0688c4.herokuapp.com/clients/{client_id}")
-    try:
-        data = response.json()
-        return data
-    except ValueError:
-        print("Response content is not valid JSON")
-        return {}
+    return response.json()
 
 # Créez une interface utilisateur Streamlit
 def main(data_shap):
