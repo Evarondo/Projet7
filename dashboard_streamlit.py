@@ -46,7 +46,7 @@ def main(data_shap):
     st.image(image, caption='Logo entreprise "prêt à dépenser"', use_column_width=True)
     
     # Appel de la fonction pour récupérer le seuil optimal
-    optimal_threshold = get_threshold()['threshold']
+    optimal_threshold = st.session_state.optimal_threshold
     
     # Saisie de l'identifiant client
     client_id = st.selectbox("Sélectionnez l'identifiant client :", data_prob['SK_ID_CURR'].unique())
