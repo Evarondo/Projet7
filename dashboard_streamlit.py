@@ -38,7 +38,12 @@ optimal_threshold = None
 
 def get_client_info(client_id):
     response = requests.get(f"https://fastapi-projet7-24875f0688c4.herokuapp.com/clients/{client_id}?optimal_threshold={optimal_threshold}")
-    return response.json()
+    try:
+        data = response.json()
+        return data
+    except ValueError:
+        print("Response content is not valid JSON")
+        return {}
 
 # Créez une interface utilisateur Streamlit
 def main(data_shap):
