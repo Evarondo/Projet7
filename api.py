@@ -16,7 +16,7 @@ class ClientSearch(BaseModel):
 app = FastAPI()
 
 @app.get("/clients/{client_id}")
-async def get_client_info(client_id: int, optimal_threshold: float = optimal_threshold):
+async def get_client_info(client_id: int):
     # On récupère les informations du client à partir du DataFrame (df)
     client_info = df[df['SK_ID_CURR'] == client_id]
     
@@ -61,10 +61,6 @@ async def get_client_info(client_id: int, optimal_threshold: float = optimal_thr
         return response
     else:
         return {"message": "Client non trouvé"}
-    
-@app.get("/threshold")
-async def get_threshold():
-    return {"threshold": optimal_threshold}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8003))
