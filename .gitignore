@@ -1,5 +1,6 @@
 *.png
 *.ipynb
+!Projet7_nettoyage_modelisation.ipynb
 sample_submission.csv
 previous_application.csv
 installments_payments.csv
