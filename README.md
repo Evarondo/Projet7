@@ -18,6 +18,8 @@ Pour mener à bien le projet, différents fichiers .csv contenant les informatio
 - Fichier previous_application.csv
 - Fichier sample_submission.csv
 
+Pour les ouvrir et les lire dans le notebook ` Projet7_nettoyage_modelisation.ipynb`, il faut les enregistrer dans un fichier "datas".  
+
 ## <u>Description du répertoire</u>
 Le répertoire contient d'abord le notebook jupyter de nettoyage et modélisation : `Projet7_nettoyage_modelisation.ipynb`, ainsi que la ``Note_methodologique.pdf`` et d'un fichier `data_processing.py`.
 
