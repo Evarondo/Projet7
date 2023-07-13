@@ -10,8 +10,10 @@ api_2.py
 application_clean.csv
 dashboard_test.py
 data_prob.csv
+data_prob_sample.csv
 df_cleaned_p7.csv
 df_filtered_p7.csv
+df_filtered_sample.csv
 df_sample.csv
 shap_values.pickle
 /api/
