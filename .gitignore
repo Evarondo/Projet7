@@ -16,16 +16,3 @@ df_filtered_p7.csv
 df_filtered_sample.csv
 df_sample.csv
 shap_values.pickle
-!datas/application_clean_sample.csv
-#!/api/
-#!/dashboard/
-
-#/api/api.py
-#/api/Procfile
-#/api/README.md
-
-#/dashboard/dashboard_streamlit.py
-#/dashboard/image_P7.png
-#/dashboard/Procfile
-#/dashboard/README.md
-#/dashboard/setup.sh
