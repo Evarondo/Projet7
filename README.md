@@ -21,7 +21,7 @@ Pour mener à bien le projet, différents fichiers .csv contenant les informatio
 Pour les ouvrir et les lire dans le notebook ` Projet7_nettoyage_modelisation.ipynb`, il faut les enregistrer dans un fichier "datas".  
 
 ## <u>Description du répertoire</u>
-Le répertoire contient d'abord le notebook jupyter de nettoyage et modélisation : `Projet7_nettoyage_modelisation.ipynb`, ainsi que la ``Note_methodologique.pdf`` et d'un fichier `data_processing.py`.
+Le répertoire contient d'abord le notebook jupyter de nettoyage et modélisation : `Projet7_nettoyage_modelisation.ipynb`, ainsi que la ``note_methodologique.pdf`` et d'un fichier `data_processing.py`.
 
 Le fichier ``Projet7_nettoyage_modelisation.ipynb`` est constitué de 2 parties : 
 - Une partie concernant l'analyse des données, le nettoyage (valeurs manquantes, aberrantes, ...) pour chaque fichier .csv, puis un feature engineering en se basant sur le kernel ayant remporté la compétition [kaggle](https://www.kaggle.com/jsaguiar/lightgbm-with-simple-features). Les fichiers sont ensuite joins entre eux en se basant sur l'identifiant client. 
@@ -29,7 +29,7 @@ Le fichier ``Projet7_nettoyage_modelisation.ipynb`` est constitué de 2 parties 
 
 Le fichier `data_processing.py` récupère les données échantillonnées ainsi que le modèle optimal et les valeurs de shap enregistrés au format .pickle. Les fonctions créées permettent la visualisation de graphiques. L'idée, pour notre api et dashboard, est d'importer ce fichier et les données et variables traitées en vue du déploiement de nos applications. 
 
-Enfin, nous trouvons un dossier "api" contenant les éléments nécessaires au déploiement de l'API et un dossier "dashboard" contenant les éléments nécessaires au déploiement du dashboard Streamlit à partir de l'API.
+Un dossier `tests` contient le test unitaire Pytest pour l'api. 
 
 ## <u>Information concernant les fichiers lourds</u>
 Dans le cas où nos données dépassent 100 Mo, ce qui est le cas si l'on garde les informations relatives aux 307 511 clients, Git LFS (Large File Storage), qui est une extension de Git, peut être utilisé pour la gestion des fichiers trop volumineux. Néanmoins, nous avons préféré échantillonner nos clients en ne gardant que 100 clients pour le déploiement sur Heroku afin d'éviter les erreurs comme il est explicité dans la documentation relative à [Heroku](https://devcenter.heroku.com/articles/git#deploy-from-a-branch-besides-main). Heroku ne supportant pas les fichiers chargés par l'extension Git LFS.
